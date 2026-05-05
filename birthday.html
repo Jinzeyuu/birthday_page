@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐 🎂</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:微软雅黑;}
+        body{
+            min-height:100vh;
+            background:linear-gradient(120deg,#ff9a9e,#fecfef);
+            text-align:center;padding:20px;overflow-x:hidden;
+        }
+        .falling{
+            position:fixed;top:-10%;z-index:1;pointer-events:none;
+            animation:fall linear infinite;
+        }
+        @keyframes fall{
+            0%{transform:translateY(0) rotate(0deg);opacity:1;}
+            100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+        }
+        .card{
+            position:relative;z-index:10;
+            max-width:90%;width:400px;margin:60px auto;
+            background:rgba(255,255,255,0.9);
+            padding:40px 25px;border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+        }
+        .title{
+            font-size:32px;color:#ff4081;margin-bottom:20px;font-weight:bold;
+            animation:fadeIn 1s forwards 0.5s;opacity:0;
+        }
+        .name{
+            font-size:24px;color:#333;margin:15px 0;
+            animation:fadeIn 1s forwards 1s;opacity:0;
+        }
+        .msg{
+            font-size:18px;color:#666;line-height:1.6;
+            animation:fadeIn 1s forwards 1.5s;opacity:0;
+        }
+        @keyframes fadeIn{to{opacity:1;}}
+        .cake{width:120px;margin:20px 0;animation:bounce 2s infinite;}
+        @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    </style>
+</head>
+<body>
+<div id="flowers"></div>
+<div class="card">
+    <div class="title">🎂 生日快乐 🎂</div>
+    <div class="name">致 最爱的人</div>
+    <div class="msg">
+        愿你岁岁常欢愉<br>
+        年年皆胜意<br>
+        平安喜乐 万事顺遂<br>
+        永远开心 永远漂亮
+    </div>
+</div>
+<audio id="bgm" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+
+<script>
+function createFalling(){
+    let container=document.getElementById('flowers');
+    let types=['❤️','🎂','🎈','🌸','💖','✨'];
+    for(let i=0;i<30;i++){
+        let e=document.createElement('div');
+        e.className='falling';
+        e.innerText=types[Math.floor(Math.random()*types.length)];
+        e.style.left=Math.random()*100+'vw';
+        e.style.fontSize=Math.random()*20+15+'px';
+        e.style.animationDuration=Math.random()*6+6+'s';
+        container.appendChild(e);
+    }
+}
+createFalling();
+// 微信唤醒音乐
+document.addEventListener('touchstart',()=>{
+    document.getElementById('bgm').play();
+},{once:true});
+</script>
+</body>
+</html>
