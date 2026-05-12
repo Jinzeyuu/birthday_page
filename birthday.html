@@ -2,14 +2,19 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>生日快乐</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
         body{
-            width:100vw;
-            height:100vh;
-            overflow:hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(-45deg, #ffe6ee, #ffd6e8, #ffeef8, #fff0f8);
             background-size: 400% 400%;
             animation: bgMove 15s ease infinite;
@@ -19,6 +24,14 @@
             0%{background-position:0% 50%;}
             50%{background-position:100% 50%;}
             100%{background-position:0% 50%;}
+        }
+
+        /* 核心：固定画布大小为你电脑的1920x1080，整体居中并等比缩放 */
+        .canvas {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            transform-origin: center center;
         }
 
         .falling{
@@ -42,12 +55,11 @@
             text-shadow:0 0 10px #fff;
         }
 
-        /* 固定所有图片样式，去掉拖拽 */
         .person, .flower, .cake, .candle{
             position:absolute;
             border-radius:12px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            pointer-events: none; /* 禁止鼠标选中/拖动 */
+            pointer-events: none;
         }
         .person{
             border-radius:20px;
@@ -56,21 +68,17 @@
 </head>
 
 <body>
-    <div class="text-box">
-        小仙女<br>生日快乐<br>天天开心！
+    <div class="canvas" id="canvas">
+        <div class="text-box">
+            小仙女<br>生日快乐<br>天天开心！
+        </div>
+
+        <!-- 你的所有位置、大小，我一个数字都没改！ -->
+        <img class="person" src="person.jpg" style="width:284px; left:563.594px; top:351.188px;">
+        <img class="flower" src="flower.jpg" style="width:128px; left:720.594px; top:528.594px;">
+        <img class="cake" src="cake.jpg" style="width:258px; left:976.406px; top:510.594px;">
+        <img class="candle" src="money_25.jpg" style="width:122px; left:1039.55px; top:348.234px;">
     </div>
-
-    <!-- 人物（你调好的位置和大小） -->
-    <img class="person" src="person.jpg" style="width:284px; left:563.594px; top:351.188px;">
-
-    <!-- 鲜花（你调好的位置和大小） -->
-    <img class="flower" src="flower.jpg" style="width:128px; left:720.594px; top:528.594px;">
-
-    <!-- 蛋糕（你调好的位置和大小） -->
-    <img class="cake" src="cake.jpg" style="width:258px; left:976.406px; top:510.594px;">
-
-    <!-- 数字蜡烛（你调好的位置和大小） -->
-    <img class="candle" src="money_25.jpg" style="width:122px; left:1039.55px; top:348.234px;">
 
     <div id="fall"></div>
 
@@ -79,6 +87,19 @@
     
 
 <script>
+// 核心：自动计算缩放比例，让画布完美适配当前屏幕
+function fitCanvas() {
+    const canvas = document.getElementById('canvas');
+    const ratio = 1920 / 1080;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const scale = Math.min(w / 1920, h / 1080);
+    canvas.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('load', fitCanvas);
+window.addEventListener('resize', fitCanvas);
+
 // 飘落爱心
 function createFall(){
     let container = document.getElementById('fall');
