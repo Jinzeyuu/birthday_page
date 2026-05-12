@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>生日快乐</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -26,7 +26,7 @@
             100%{background-position:0% 50%;}
         }
 
-        /* 核心：固定画布大小为你电脑的1920x1080，整体居中并等比缩放 */
+        /* 核心：固定画布为你电脑的 1920x1080 比例 */
         .canvas {
             position: relative;
             width: 1920px;
@@ -73,7 +73,7 @@
             小仙女<br>生日快乐<br>天天开心！
         </div>
 
-        <!-- 你的所有位置、大小，我一个数字都没改！ -->
+        <!-- 你的所有像素位置，一个都没改！ -->
         <img class="person" src="person.jpg" style="width:284px; left:563.594px; top:351.188px;">
         <img class="flower" src="flower.jpg" style="width:128px; left:720.594px; top:528.594px;">
         <img class="cake" src="cake.jpg" style="width:258px; left:976.406px; top:510.594px;">
@@ -87,16 +87,19 @@
     
 
 <script>
-// 核心：自动计算缩放比例，让画布完美适配当前屏幕
+// 核心：自动计算缩放，让画布完美适配当前屏幕
 function fitCanvas() {
     const canvas = document.getElementById('canvas');
     const ratio = 1920 / 1080;
     const w = window.innerWidth;
     const h = window.innerHeight;
+    
+    // 计算缩放比例，保持16:9，不拉伸、不变形
     const scale = Math.min(w / 1920, h / 1080);
     canvas.style.transform = `scale(${scale})`;
 }
 
+// 页面加载和窗口变化时都执行
 window.addEventListener('load', fitCanvas);
 window.addEventListener('resize', fitCanvas);
 
